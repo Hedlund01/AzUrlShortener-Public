@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -54,6 +55,12 @@ namespace adminBlazorWebsite.Data
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
                     .ConfigureAwait(false))
                 {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        throw new Exception(error);
+                    }
+
                     var resultList = response.Content.ReadAsStringAsync().Result;
                     return JsonConvert.DeserializeObject<ShortUrlList>(resultList);
                 }
@@ -78,7 +85,11 @@ namespace adminBlazorWebsite.Data
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
                     .ConfigureAwait(false))
                 {
-
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        throw new Exception(error);
+                    }
                     var resultList = response.Content.ReadAsStringAsync().Result;
                     return JsonConvert.DeserializeObject<ShortUrlList>(resultList);
                 }
@@ -102,6 +113,11 @@ namespace adminBlazorWebsite.Data
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
                     .ConfigureAwait(false))
                 {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        throw new Exception(error);
+                    }
 
                     var resultList = response.Content.ReadAsStringAsync().Result;
                     return JsonConvert.DeserializeObject<ShortUrlEntity>(resultList);
@@ -125,6 +141,12 @@ namespace adminBlazorWebsite.Data
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
                     .ConfigureAwait(false))
                 {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        throw new Exception(error);
+                    }
+
                     var resultList = response.Content.ReadAsStringAsync().Result;
                     return JsonConvert.DeserializeObject<ShortUrlEntity>(resultList);
                 }

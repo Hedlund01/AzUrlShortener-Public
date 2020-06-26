@@ -1,0 +1,74 @@
+﻿@if (_render)
+{
+    <div class="alert @strAlertColor alert-dismissible fade show fixed-bottom" role="alert" style="width: 20vw;">
+        @if (AlertHeading != null)
+        {
+            <h5 class="alert-heading">@AlertHeading</h5>
+        }
+        @AlertBody
+        <button type="button" class="close" aria-label="Close" @onclick="Hide">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+
+@code {
+
+    string strAlertColor;
+
+    private bool _render = false;
+
+    public enum Color
+    {
+        Danger,
+        Warning,
+        Success,
+        Info
+    }
+
+    [Parameter]
+    public RenderFragment AlertHeading { get; set; }
+
+    [Parameter]
+    public RenderFragment AlertBody { get; set; }
+
+    [Parameter]
+    public Color AlertColor { get; set; } = Color.Warning;
+
+    protected override void OnParametersSet()
+    {
+        switch (AlertColor)
+        {
+            case Color.Danger:
+                strAlertColor = "alert-danger";
+                break;
+            case Color.Warning:
+                strAlertColor = "alert-warning";
+                break;
+            case Color.Success:
+                strAlertColor = "alert-success";
+                break;
+            case Color.Info:
+                strAlertColor = "alert-info";
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Show()
+    {
+        _render = true;
+    }
+
+    public void Hide()
+    {
+        _render = false;
+    }
+
+    public void Toggle()
+    {
+        _render = !_render;
+    }
+}

@@ -108,6 +108,15 @@ else
 }
 
 
+<Alert AlertColor="Alert.Color.Danger" @ref="ErrorAlert">
+    <AlertHeading>
+        <strong>Oppps...</strong> an error has occured.
+    </AlertHeading>
+    <AlertBody>
+        <p>@ErrorMessage</p>
+    </AlertBody>
+
+</Alert>
 
 @code
 {
@@ -117,6 +126,9 @@ else
     ShortUrlEntity editedUrl;
     ShortUrlList UrlList;
 
+    Alert ErrorAlert;
+    string ErrorMessage;
+
     void ClosePopup()
     {
         ShowCreatePopup = false;
@@ -125,8 +137,17 @@ else
     private async Task SaveShortUrl()
     {
         ShowCreatePopup = false;
-        await UrlService.CreateShortUrl(shortUrlRequest);
-        UrlList = await UrlService.GetUrlList();
+        try
+        {
+            await UrlService.CreateShortUrl(shortUrlRequest);
+            UrlList = await UrlService.GetUrlList();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+            ErrorAlert.Show();
+        }
+
     }
 
     private async Task SaveUpdatedShortUrl()
