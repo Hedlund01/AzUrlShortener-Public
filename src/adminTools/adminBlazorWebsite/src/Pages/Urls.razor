@@ -115,7 +115,6 @@ else
     <AlertBody>
         <p>@ErrorMessage</p>
     </AlertBody>
-
 </Alert>
 
 @code
@@ -153,12 +152,31 @@ else
     private async Task SaveUpdatedShortUrl()
     {
         ShowEditPopup = false;
-        await UrlService.UpdateShortUrl(editedUrl);
-        UrlList = await UrlService.GetUrlList();
+
+        try
+        {
+            await UrlService.UpdateShortUrl(editedUrl);
+            UrlList = await UrlService.GetUrlList();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+            ErrorAlert.Show();
+        }
+
     }
     protected override async Task OnParametersSetAsync()
     {
-        UrlList = await UrlService.GetUrlList();
+        try
+        {
+            UrlList = await UrlService.GetUrlList();
+
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+            ErrorAlert.Show();
+        }
     }
 
     [Authorize(Roles = "admin")]
@@ -179,8 +197,17 @@ else
     [Authorize(Roles = "admin")]
     public async Task ArchiveShortUrl(ShortUrlEntity urlEntity)
     {
-        await UrlService.ArchiveShortUrl(urlEntity);
-        UrlList = await UrlService.GetUrlList();
+        try
+        {
+            await UrlService.ArchiveShortUrl(urlEntity);
+            UrlList = await UrlService.GetUrlList();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+            ErrorAlert.Show();
+        }
+
     }
 
 
